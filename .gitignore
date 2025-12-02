@@ -1,0 +1,21 @@
+# 1. Virtual Environment (DO NOT COMMIT)
+.venv/
+
+# 2. Sensitive Configuration Files (DO NOT COMMIT)
+service_account.json
+
+# 3. Log Files and Temporary Files (DO NOT COMMIT)
+*.log
+fiery_automation.log
+
+# 4. Environment variables
+.env
+.env.*
+
+# 5. Python Specific Generated Files (DO NOT COMMIT)
+# These are generated when your script runs
+__pycache__/
+*.pyc
+
+# 6. OS Specific Files (Mac - DO NOT COMMIT)
+.DS_Store

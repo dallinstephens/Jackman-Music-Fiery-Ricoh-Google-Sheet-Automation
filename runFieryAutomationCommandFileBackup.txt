@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Define the directory where this .command file is located
+COMMAND_DIR="$(dirname "$0")"
+
+# Define the actual directory of your Python script and virtual environment
+# Based on your setup, this is likely /Users/jerryrayjackman/Desktop/Fiery_Automation
+SCRIPT_AND_VENV_DIR="$COMMAND_DIR/Fiery_Automation"
+
+# Define the log file path
+LOG_FILE="$SCRIPT_AND_VENV_DIR/fiery_automation.log"
+
+# Navigate to the script's directory.
+cd "$SCRIPT_AND_VENV_DIR" || { echo "ERROR: Could not navigate to $SCRIPT_AND_VENV_DIR." >&2; exit 1; }
+
+# Clear the log file at the start of each run by using '>'
+echo "--- Script started at $(date) ---" > "$LOG_FILE"
+echo "Running Python script from: $(pwd)..." >> "$LOG_FILE"
+
+# --- Virtual Environment Activation (IMPROVED) ---
+# Define the explicit path to the activation script relative to the current directory (Fiery_Automation)
+VENV_ACTIVATE_SCRIPT="./.venv/bin/activate"
+
+if [ -f "$VENV_ACTIVATE_SCRIPT" ]; then
+    echo "Activating virtual environment from $VENV_ACTIVATE_SCRIPT..." >> "$LOG_FILE"
+    
+    # Use 'source' to execute the activation script in the current shell
+    source "$VENV_ACTIVATE_SCRIPT" >> "$LOG_FILE" 2>&1
+    
+    if [ $? -eq 0 ]; then
+        echo "Virtual environment activated successfully." >> "$LOG_FILE"
+    else
+        # If 'source' fails (status code is not 0), we exit.
+        echo "FATAL ERROR: Failed to activate virtual environment. Check contents of log for details." >> "$LOG_FILE"
+        exit 1
+    fi
+else
+    echo "WARNING: Virtual environment not found at $VENV_ACTIVATE_SCRIPT. Proceeding with system Python (may cause dependency issues)." >> "$LOG_FILE"
+fi
+
+# 🚨 RUN SCRIPT COMMAND (UNCHANGED) 🚨
+# Run your Python script, passing 'C5300S' as the argument to select the printer config.
+python fiery_automation.py C5300S >> "$LOG_FILE" 2>&1
+
+# Deactivate the virtual environment
+# This command is often not strictly necessary but is good practice.
+# It only runs if the environment was successfully activated.
+deactivate >> "$LOG_FILE" 2>&1
+echo "Virtual environment deactivated." >> "$LOG_FILE"
+
+echo "Python script finished executing. Terminal will close in 5 seconds." >> "$LOG_FILE"
+echo "--- Script finished at $(date) ---" >> "$LOG_FILE"
+
+# The following lines will print to the terminal window
+echo ""
+echo "Script finished. Terminal will close in 5 seconds."
+sleep 5
+
+# Exit the shell
+exit 0
