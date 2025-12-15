@@ -29,7 +29,7 @@ load_dotenv()
 
 # Define keys using .env if available, otherwise use defaults
 C5300S_KEY = os.getenv('PRINTER_1_KEY', 'C5300S') 
-S5001S_KEY = os.getenv('PRINTER_2_KEY', '5001S') 
+C5300S_2_KEY = os.getenv('PRINTER_2_KEY', 'C5300S-2') 
 
 PRINTER_CONFIGS = {
     C5300S_KEY: {
@@ -38,11 +38,11 @@ PRINTER_CONFIGS = {
         "password": os.getenv('FIERY_C5300S_PASSWORD'),
         "api_key": os.getenv('FIERY_C5300S_API_KEY')
     },
-    S5001S_KEY: {
-        "ip": os.getenv('FIERY_5001S_IP'),
-        "username": os.getenv('FIERY_5001S_USERNAME'),
-        "password": os.getenv('FIERY_5001S_PASSWORD'),
-        "api_key": os.getenv('FIERY_5001S_API_KEY')
+    C5300S_2_KEY: {
+        "ip": os.getenv('FIERY_C5300S-2_IP'),
+        "username": os.getenv('FIERY_C5300S-2_USERNAME'),
+        "password": os.getenv('FIERY_C5300S-2_PASSWORD'),
+        "api_key": os.getenv('FIERY_C5300S-2_API_KEY')
     }
 }
 
